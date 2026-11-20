@@ -7,7 +7,7 @@ export default function Clock({ timeZone, city }) {
 
   useEffect(() => {
     setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 1000 * 15);
+    const id = setInterval(() => setNow(new Date()), 15000);
     return () => clearInterval(id);
   }, []);
 
@@ -20,9 +20,9 @@ export default function Clock({ timeZone, city }) {
     : "\u00a0";
 
   return (
-    <p className="clock" aria-live="off">
+    <p className="clock">
       <span className="clock-time">{time}</span>
-      <span className="clock-city">in {city} right now</span>
+      <span className="clock-city">{city} time</span>
     </p>
   );
 }
