@@ -2,46 +2,46 @@
 
 export const profile = {
   name: "Jerald James Patiag",
-  role: "BSIT student and aspiring developer",
-  school: "Holy Cross of Davao College",
-  city: "Davao City, Philippines",
+  shortName: "Jerald Patiag",
+  role: "Information Technology student, Holy Cross of Davao College",
+  availability: "Open to internships and side projects.",
+  city: "Davao City",
   timezone: "Asia/Manila",
-  intro:
-    "I'm a second-year Information Technology student. I build small programs, study how people use software, and I'm looking for internships and side projects.",
-  email: "you@example.com",
-  links: [
-    { label: "GitHub", href: "https://github.com/your-username" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/your-username" },
+  about: [
+    "I’m a second-year Information Technology student in Davao City. So far I’ve built GUI apps in Java Swing and in HTML and JavaScript, plus a Pomodoro web app for my HCI class.",
+    "I like projects where I have to think about the person using them, not only the code behind them.",
   ],
+  email: "you@example.com",
+  links: [{ label: "GitHub", href: "https://github.com/Rald011" }],
 };
 
-// Replace these with your real projects.
+// Add a project by copying one block. Leave out href if there is no link yet.
 export const projects = [
   {
-    title: "Project name one",
+    title: "FocusMode",
     year: "2026",
-    what: "One sentence on what it does and who it is for.",
-    stack: ["Java"],
-    href: "https://github.com/your-username/project-one",
+    what: "A Pomodoro timer web app, built as my HCI 102 final project with a research paper, design documentation, and a defense.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    href: "https://github.com/Rald011/FocusMode",
   },
   {
-    title: "Project name two",
+    title: "Focvs",
     year: "2026",
-    what: "One sentence on what it does and who it is for.",
-    stack: ["Next.js", "CSS"],
-    href: "https://github.com/your-username/project-two",
-  },
-  {
-    title: "Project name three",
-    year: "2025",
-    what: "One sentence on what it does and who it is for.",
-    stack: ["Figma", "HCI"],
-    href: "https://github.com/your-username/project-three",
+    what: "A mockup of a productivity app, designed to practice interface layout and flow.",
+    stack: ["UI and UX design"],
   },
 ];
 
 export const skills = [
   { group: "Languages", items: ["Java", "JavaScript", "HTML", "CSS"] },
-  { group: "Tools", items: ["Next.js", "React", "Git", "Figma"] },
-  { group: "Coursework", items: ["Discrete math", "HCI", "Probability and statistics"] },
+  { group: "Tools", items: ["Git", "GitHub", "Next.js"] },
+  {
+    group: "Coursework",
+    items: [
+      "Data structures and algorithms",
+      "Discrete mathematics",
+      "Human-computer interaction",
+      "Probability and statistics",
+    ],
+  },
 ];
