@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Clock from "./Clock";
 
 const sections = [
@@ -13,6 +15,9 @@ const sections = [
 export default function Sidebar({ name, shortName, role, timezone, city }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("about");
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const current = onHome ? active : "projects";
   const burger = useRef(null);
   const firstLink = useRef(null);
 
@@ -59,14 +64,14 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [pathname]);
 
   return (
     <header className="side">
       <div className="bar">
-        <a className="bar-name" href="#top">
+        <Link className="bar-name" href="/" onClick={() => setOpen(false)}>
           {shortName}
-        </a>
+        </Link>
         <button
           ref={burger}
           className="burger"
@@ -84,9 +89,9 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
 
       <div id="menu" className={open ? "panel open" : "panel"}>
         <div className="who">
-          <a className="who-name" href="#top">
+          <Link className="who-name" href="/">
             {name}
-          </a>
+          </Link>
           <p className="who-role">{role}</p>
         </div>
 
@@ -94,14 +99,14 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
           <ul>
             {sections.map((s, i) => (
               <li key={s.id}>
-                <a
+                <Link
                   ref={i === 0 ? firstLink : null}
-                  href={`#${s.id}`}
-                  aria-current={active === s.id ? "true" : undefined}
+                  href={`/#${s.id}`}
+                  aria-current={current === s.id ? "true" : undefined}
                   onClick={() => setOpen(false)}
                 >
                   {s.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

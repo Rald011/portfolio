@@ -1,7 +1,9 @@
-import { Syne, Public_Sans } from "next/font/google";
+import { Manrope, Public_Sans } from "next/font/google";
+import Sidebar from "./Sidebar";
+import { profile } from "./data";
 import "./globals.css";
 
-const display = Syne({
+const display = Manrope({
   subsets: ["latin"],
   variable: "--font-display",
 });
@@ -27,7 +29,18 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        <div className="shell">
+          <Sidebar
+            name={profile.name}
+            shortName={profile.shortName}
+            role={profile.role}
+            timezone={profile.timezone}
+            city={profile.city}
+          />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
