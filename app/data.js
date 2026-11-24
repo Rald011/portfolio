@@ -11,7 +11,7 @@ export const profile = {
     "I’m a second-year Information Technology student in Davao City. So far I’ve built GUI apps in Java Swing and in HTML and JavaScript, plus a Pomodoro web app for my HCI class.",
     "I like projects where I have to think about the person using them, not only the code behind them.",
   ],
-  email: "jeraldjamespatiag18@gmail.com",
+  email: "you@example.com",
   links: [{ label: "GitHub", href: "https://github.com/Rald011" }],
 };
 

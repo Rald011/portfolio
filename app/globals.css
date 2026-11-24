@@ -4,6 +4,7 @@
   --muted: #9a9a9a;
   --line: #262626;
   --sun: #f2c230;
+  --focus: #f2c230;
   --wrap: 52rem;
   --bar: 3.5rem;
   --head: 4rem;
@@ -14,6 +15,15 @@
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; color-scheme: dark; }
+
+html[data-theme="light"] {
+  --bg: #fafafa;
+  --ink: #141414;
+  --muted: #5c5c5c;
+  --line: #dcdcdc;
+  --focus: #141414;
+  color-scheme: light;
+}
 
 body {
   margin: 0;
@@ -27,7 +37,7 @@ body {
 
 a { color: inherit; }
 
-:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .sr {
   position: absolute;
@@ -61,6 +71,27 @@ a { color: inherit; }
   letter-spacing: -0.01em;
   text-decoration: none;
 }
+
+.bar-actions { display: flex; align-items: center; gap: 0.25rem; }
+
+.theme {
+  display: grid;
+  place-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  color: var(--ink);
+  cursor: pointer;
+}
+.theme:hover { background: var(--line); }
+.theme svg { width: 1.25rem; height: 1.25rem; }
+.theme .i-moon { display: none; }
+html[data-theme="light"] .theme .i-sun { display: none; }
+html[data-theme="light"] .theme .i-moon { display: block; }
+.panel .theme { display: none; }
 
 .burger {
   width: 2.75rem;
@@ -302,6 +333,7 @@ main > footer p { margin: 0; }
   .panel nav a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--sun); }
 
   .foot { margin: 0; padding: 0; }
+  .panel .theme { display: grid; margin-left: -0.5rem; }
   .clock { flex-direction: row; align-items: baseline; gap: 0.5rem; }
   .clock-time { min-height: 0; font-size: 0.95rem; font-weight: 600; }
   .clock-city { font-size: 0.85rem; }

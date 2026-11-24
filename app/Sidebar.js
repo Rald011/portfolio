@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Clock from "./Clock";
+import ThemeToggle from "./ThemeToggle";
 
 const sections = [
   { id: "about", label: "About" },
@@ -72,19 +73,22 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
         <Link className="bar-name" href="/" onClick={() => setOpen(false)}>
           {shortName}
         </Link>
-        <button
-          ref={burger}
-          className="burger"
-          type="button"
-          aria-expanded={open}
-          aria-controls="menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className="bar-actions">
+          <ThemeToggle />
+          <button
+            ref={burger}
+            className="burger"
+            type="button"
+            aria-expanded={open}
+            aria-controls="menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       <div id="menu" className={open ? "panel open" : "panel"}>
@@ -115,6 +119,7 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
         <div className="foot">
           <Clock timeZone={timezone} city={city} />
         </div>
+        <ThemeToggle />
       </div>
     </header>
   );
