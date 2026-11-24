@@ -27,6 +27,7 @@ html[data-theme="light"] {
 
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body), system-ui, sans-serif;
@@ -178,12 +179,12 @@ main > section,
 main > footer { max-width: 44rem; }
 
 main > section {
+  position: relative;
   padding: 3rem 0;
-  border-top: 1px solid var(--line);
   scroll-margin-top: calc(var(--bar) + var(--top) + 1rem);
 }
 
-.hero { padding-top: 0; padding-bottom: 2.5rem; border-top: 0; }
+.hero { padding-top: 0; padding-bottom: 2.5rem; }
 
 h1 {
   margin: 0;
@@ -348,4 +349,194 @@ main > footer p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .panel, .panel.open, .burger span { transition: none; }
+}
+
+/* ---------- Motion: hero, reveals, cursor ---------- */
+
+.shell { position: relative; z-index: 1; }
+
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  height: 2px;
+  background: var(--sun);
+  transform-origin: left;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  min-height: calc(82svh - var(--bar) - var(--top));
+  --scroll: 0;
+}
+.hero-inner {
+  translate: 0 calc(var(--scroll) * -0.14px);
+  opacity: max(0, calc(1 - var(--scroll) / 550));
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 11vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.word { display: inline-block; white-space: nowrap; }
+.ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.55em) rotate(5deg);
+  animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 45ms + 150ms);
+}
+.hero-role,
+.hero-status {
+  opacity: 0;
+  animation: fade-up 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.hero-role { animation-delay: 1.2s; }
+.hero-status { animation-delay: 1.4s; }
+
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  top: 6%;
+  right: -12%;
+  width: min(30rem, 75vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, color-mix(in srgb, var(--sun) 30%, transparent), transparent 68%);
+  filter: blur(36px);
+  translate: 0 calc(var(--scroll) * 0.3px);
+  animation: float 14s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.cue {
+  position: absolute;
+  left: 0;
+  bottom: 1.25rem;
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(var(--ink), transparent);
+  transform-origin: top;
+  opacity: max(0, calc(1 - var(--scroll) / 180));
+  animation: cue 2.2s ease-in-out infinite;
+}
+
+@keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-8%, 10%) scale(1.15); }
+}
+@keyframes cue {
+  0% { transform: scaleY(0); }
+  50% { transform: scaleY(1); }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* Scroll reveals (only hidden when JS is running) */
+html[data-js] [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+html[data-js] [data-reveal].in { opacity: 1; transform: none; }
+
+main > section:not(.hero)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--line);
+  transform-origin: left;
+}
+html[data-js] main > section:not(.hero)::before {
+  transform: scaleX(0);
+  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-js] main > section.in::before { transform: scaleX(1); }
+main > footer { border-top: 1px solid var(--line); }
+
+/* Links and magnetic items */
+[data-magnet] {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.links a {
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 2px no-repeat;
+  transition: background-size 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.links a:hover { background-size: 100% 2px; }
+.panel nav a { transition: color 0.2s ease, border-color 0.2s ease; }
+
+@media (hover: hover) {
+  .projects li { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease; }
+  html[data-js] .projects li.in { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease; transition-delay: 0s; }
+  .projects li:hover { transform: translateX(10px); }
+  .projects:hover li:not(:hover) { opacity: 0.4; }
+}
+
+/* Cursor and spotlight (mouse only) */
+.spotlight,
+.cursor-ring,
+.cursor-dot { display: none; }
+
+html[data-cursor="on"] { cursor: none; }
+html[data-cursor="on"] a,
+html[data-cursor="on"] button { cursor: none; }
+html[data-cursor="on"] .spotlight {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(30rem circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--sun) 9%, transparent), transparent 70%);
+}
+html[data-cursor="on"] .cursor-ring,
+html[data-cursor="on"] .cursor-dot {
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: difference;
+  background: #fff;
+  transition: opacity 0.2s ease, scale 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-cursor="on"] .cursor-dot { width: 0.5rem; height: 0.5rem; margin: -0.25rem 0 0 -0.25rem; }
+html[data-cursor="on"] .cursor-ring {
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: -1.125rem 0 0 -1.125rem;
+  background: transparent;
+  border: 1.5px solid #fff;
+}
+html[data-moved] .cursor-ring,
+html[data-moved] .cursor-dot { opacity: 1; }
+html[data-hover="1"] .cursor-ring { scale: 1.8; background: rgba(255, 255, 255, 0.15); }
+html[data-hover="1"] .cursor-dot { scale: 0; }
+html[data-press="1"] .cursor-ring { scale: 0.8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ch, .hero-role, .hero-status { animation: none; opacity: 1; transform: none; }
+  .hero-glow, .cue { animation: none; }
+  .hero-inner, .hero-glow { translate: none; opacity: 1; }
+  html[data-js] [data-reveal],
+  html[data-js] [data-reveal].in { opacity: 1; transform: none; transition: none; }
+  html[data-js] main > section:not(.hero)::before { transform: none; transition: none; }
+  .projects li, [data-magnet] { transition: none; }
+  .progress { display: none; }
 }

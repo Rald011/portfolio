@@ -20,7 +20,7 @@ export default async function ProjectPage({ params }) {
 
   return (
     <main id="top" className="project">
-      <div className="project-head">
+      <div className="project-head" data-reveal>
         <Link className="crumb" href="/#projects">
           Back to projects
         </Link>
@@ -46,7 +46,7 @@ export default async function ProjectPage({ params }) {
       </div>
 
       {p.images?.length > 0 && (
-        <section aria-labelledby="shots-h">
+        <section data-reveal aria-labelledby="shots-h">
           <h2 id="shots-h">Screenshots</h2>
           <div className="shots">
             {p.images.map((img) => (
@@ -61,7 +61,7 @@ export default async function ProjectPage({ params }) {
       )}
 
       {p.about?.length > 0 && (
-        <section aria-labelledby="about-h">
+        <section data-reveal aria-labelledby="about-h">
           <h2 id="about-h">About</h2>
           {p.about.map((para) => (
             <p key={para} className="about-p">
@@ -72,7 +72,7 @@ export default async function ProjectPage({ params }) {
       )}
 
       {p.features?.length > 0 && (
-        <section aria-labelledby="features-h">
+        <section data-reveal aria-labelledby="features-h">
           <h2 id="features-h">What it does</h2>
           <ul className="list">
             {p.features.map((f) => (
@@ -83,7 +83,7 @@ export default async function ProjectPage({ params }) {
       )}
 
       {p.design?.length > 0 && (
-        <section aria-labelledby="design-h">
+        <section data-reveal aria-labelledby="design-h">
           <h2 id="design-h">Design decisions</h2>
           <ul className="list">
             {p.design.map((d) => (
@@ -93,7 +93,7 @@ export default async function ProjectPage({ params }) {
         </section>
       )}
 
-      <section aria-labelledby="stack-h">
+      <section data-reveal aria-labelledby="stack-h">
         <h2 id="stack-h">Built with</h2>
         <p className="about-p">{p.stack.join(", ")}</p>
       </section>
