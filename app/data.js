@@ -16,7 +16,7 @@ export const profile = {
     "I’m a second-year Information Technology student in Davao City. I work mostly in Java, Kotlin, and JavaScript. So far that means Android apps, GUI apps in Java Swing, and web projects, including a Pomodoro app for my HCI class.",
     "I like projects where I have to think about the person using them, not only the code behind them.",
   ],
-  email: "you@example.com",
+  email: "jeraldjamespatiag18@gmail.com",
   links: [{ label: "GitHub", href: "https://github.com/Rald011" }],
 };
 
