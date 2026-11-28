@@ -1,6 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { profile, projects } from "../../data";
+import {
+  buildProjectFactLinks,
+  getProjectNavigation,
+} from "../../lib/portfolio";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -10,16 +15,21 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const p = projects.find((x) => x.slug === slug);
   if (!p) return {};
-  return { title: `${p.title} | ${profile.name}`, description: p.what };
+  const title = `${p.title} | ${profile.name}`;
+  return {
+    title,
+    description: p.what,
+    openGraph: { title, description: p.what, type: "article" },
+  };
 }
 
 export default async function ProjectPage({ params }) {
   const { slug } = await params;
-  const index = projects.findIndex((x) => x.slug === slug);
-  if (index === -1) notFound();
-  const p = projects[index];
-  const prev = projects[index - 1];
-  const next = projects[index + 1];
+  const nav = getProjectNavigation(projects, slug);
+  if (!nav) notFound();
+
+  const { project: p, prev, next } = nav;
+  const factLinks = buildProjectFactLinks(p);
 
   return (
     <main id="top" className="project">
@@ -46,6 +56,12 @@ export default async function ProjectPage({ params }) {
                 <dd>{p.status}</dd>
               </div>
             )}
+            {p.role && (
+              <div>
+                <dt>My role</dt>
+                <dd>{p.role}</dd>
+              </div>
+            )}
             {p.context && (
               <div>
                 <dt>Context</dt>
@@ -56,28 +72,17 @@ export default async function ProjectPage({ params }) {
               <dt>Built with</dt>
               <dd>{p.stack.join(", ")}</dd>
             </div>
-            {p.repo && (
-              <div>
-                <dt>Code</dt>
+            {factLinks.map((link) => (
+              <div key={link.dt}>
+                <dt>{link.dt}</dt>
                 <dd>
-                  <a href={p.repo} target="_blank" rel="noreferrer">
-                    GitHub repository
+                  <a href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
                     <span className="sr"> (opens in a new tab)</span>
                   </a>
                 </dd>
               </div>
-            )}
-            {p.paper && (
-              <div>
-                <dt>Paper</dt>
-                <dd>
-                  <a href={p.paper} target="_blank" rel="noreferrer">
-                    Read the PDF
-                    <span className="sr"> (opens in a new tab)</span>
-                  </a>
-                </dd>
-              </div>
-            )}
+            ))}
           </dl>
         </aside>
 
@@ -88,8 +93,13 @@ export default async function ProjectPage({ params }) {
               <div className="shots">
                 {p.images.map((img) => (
                   <figure key={img.src}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.src} alt={img.alt} loading="lazy" />
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      width={img.width || 1280}
+                      height={img.height || 800}
+                      sizes="(min-width: 56rem) 44rem, 100vw"
+                    />
                     {img.caption && <figcaption>{img.caption}</figcaption>}
                   </figure>
                 ))}
@@ -105,6 +115,17 @@ export default async function ProjectPage({ params }) {
                   {para}
                 </p>
               ))}
+            </section>
+          )}
+
+          {p.mine?.length > 0 && (
+            <section aria-labelledby="mine-h">
+              <h2 id="mine-h">What I built</h2>
+              <ul className="list">
+                {p.mine.map((m) => (
+                  <li key={m}>{m}</li>
+                ))}
+              </ul>
             </section>
           )}
 

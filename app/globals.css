@@ -176,18 +176,6 @@ html[data-theme="light"] .theme .i-moon { display: block; }
 }
 .panel nav a[aria-current="true"] { color: var(--sun); }
 
-.foot { margin-top: auto; padding-top: 2rem; }
-
-.clock { margin: 0; display: flex; flex-direction: column; gap: 0.1rem; }
-.clock-time {
-  min-height: 1.5em;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
-.clock-city { font-size: 0.9rem; color: var(--muted); }
 
 /* ---------- Content ---------- */
 
@@ -388,7 +376,8 @@ main > footer p { margin: 0; }
 }
 .list { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.75rem; max-width: 36rem; }
 .shots { display: grid; gap: 1.5rem; }
-.shots img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); }
+.shots figure { margin: 0; }
+.shots img { display: block; width: 100%; max-width: 100%; height: auto; border: 1px solid var(--line); }
 .shots figcaption { margin-top: 0.4rem; font-size: 0.9rem; color: var(--muted); }
 
 .pager {
@@ -467,12 +456,8 @@ main > footer p { margin: 0; }
   .panel nav a:hover { color: var(--ink); }
   .panel nav a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--sun); }
 
-  .foot { margin: 0; padding: 0; }
-  .panel .theme { display: grid; margin-left: -0.5rem; }
-  .clock { flex-direction: row; align-items: baseline; gap: 0.5rem; }
-  .clock-time { min-height: 0; font-size: 0.95rem; font-weight: 600; }
-  .clock-city { font-size: 0.85rem; }
-
+    .panel .theme { display: grid; margin-left: 0.25rem; }
+      
   main { padding: 4rem max(2rem, calc((100% - var(--wrap)) / 2)) 6rem; }
   main > section,
   main > footer,

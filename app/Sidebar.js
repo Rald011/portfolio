@@ -3,17 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Clock from "./Clock";
 import ThemeToggle from "./ThemeToggle";
+import { SITE_SECTIONS, resolveActiveSection } from "./lib/portfolio";
 
-const sections = [
-  { id: "about", label: "About" },
-  { id: "projects", label: "Projects" },
-  { id: "skills", label: "Skills" },
-  { id: "contact", label: "Contact" },
-];
-
-export default function Sidebar({ name, shortName, role, timezone, city }) {
+export default function Sidebar({ name, shortName, role }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("about");
   const pathname = usePathname();
@@ -21,6 +14,7 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
   const current = onHome ? active : "projects";
   const burger = useRef(null);
   const firstLink = useRef(null);
+  const intersectingRef = useRef(new Set());
 
   // Mobile menu: lock page scroll, close on Escape, move focus in.
   useEffect(() => {
@@ -50,21 +44,54 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // Highlight the section currently in view.
+  // Highlight the section currently in view, including Contact at page bottom.
   useEffect(() => {
-    const els = sections
-      .map((s) => document.getElementById(s.id))
-      .filter(Boolean);
+    intersectingRef.current = new Set();
+
+    const syncActive = () => {
+      const next = resolveActiveSection({
+        pathname,
+        intersectingIds: Array.from(intersectingRef.current),
+        scrollY: window.scrollY,
+        innerHeight: window.innerHeight,
+        scrollHeight: document.documentElement.scrollHeight,
+      });
+      if (next) setActive(next);
+    };
+
+    if (pathname !== "/") {
+      syncActive();
+      return;
+    }
+
+    const els = SITE_SECTIONS.map((s) => document.getElementById(s.id)).filter(
+      Boolean
+    );
     if (!("IntersectionObserver" in window) || !els.length) return;
+
     const io = new IntersectionObserver(
       (entries) => {
-        const hit = entries.find((e) => e.isIntersecting);
-        if (hit) setActive(hit.target.id);
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            intersectingRef.current.add(entry.target.id);
+          } else {
+            intersectingRef.current.delete(entry.target.id);
+          }
+        }
+        syncActive();
       },
       { rootMargin: "-35% 0px -55% 0px" }
     );
+
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    window.addEventListener("scroll", syncActive, { passive: true });
+    window.addEventListener("resize", syncActive, { passive: true });
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", syncActive);
+      window.removeEventListener("resize", syncActive);
+    };
   }, [pathname]);
 
   return (
@@ -101,7 +128,7 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
 
         <nav aria-label="Sections">
           <ul>
-            {sections.map((s, i) => (
+            {SITE_SECTIONS.map((s, i) => (
               <li key={s.id}>
                 <Link
                   ref={i === 0 ? firstLink : null}
@@ -116,9 +143,6 @@ export default function Sidebar({ name, shortName, role, timezone, city }) {
           </ul>
         </nav>
 
-        <div className="foot">
-          <Clock timeZone={timezone} city={city} />
-        </div>
         <ThemeToggle />
       </div>
     </header>

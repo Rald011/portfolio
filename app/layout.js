@@ -1,6 +1,7 @@
 import { Manrope, Public_Sans } from "next/font/google";
 import Sidebar from "./Sidebar";
 import { profile } from "./data";
+import { getSiteUrl } from "./lib/portfolio";
 import "./globals.css";
 
 const display = Manrope({
@@ -13,15 +14,24 @@ const body = Public_Sans({
   variable: "--font-body",
 });
 
+const description =
+  "Portfolio of Jerald James Patiag, an Information Technology student in Davao City.";
+
 export const metadata = {
-  title: "Jerald James Patiag",
-  description:
-    "Portfolio of Jerald James Patiag, an Information Technology student in Davao City.",
+  metadataBase: new URL(getSiteUrl()),
+  title: profile.name,
+  description,
   openGraph: {
-    title: "Jerald James Patiag",
-    description:
-      "Portfolio of Jerald James Patiag, an Information Technology student in Davao City.",
+    title: profile.name,
+    description,
+    url: "/",
+    siteName: profile.name,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: profile.name,
+    description,
   },
 };
 
@@ -53,8 +63,6 @@ export default function RootLayout({ children }) {
             name={profile.name}
             shortName={profile.shortName}
             role={profile.role}
-            timezone={profile.timezone}
-            city={profile.city}
           />
           {children}
         </div>

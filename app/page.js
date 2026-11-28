@@ -12,6 +12,10 @@ export default function Home() {
           <p className="hero-status">{profile.availability}</p>
           <p className="hero-links">
             <a href="#projects">See projects</a>
+            <a href={profile.resume} target="_blank" rel="noreferrer">
+              Resume
+              <span className="sr"> (PDF, opens in a new tab)</span>
+            </a>
             <a href="#contact">Get in touch</a>
           </p>
         </div>
@@ -72,6 +76,10 @@ export default function Home() {
         </a>
         <p className="links">
           <CopyEmail email={profile.email} />
+          <a href={profile.resume} target="_blank" rel="noreferrer">
+            Resume (PDF)
+            <span className="sr"> (opens in a new tab)</span>
+          </a>
           {profile.links.map((l) => (
             <a key={l.label} href={l.href} target="_blank" rel="noreferrer">
               {l.label}

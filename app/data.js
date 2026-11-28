@@ -17,13 +17,16 @@ export const profile = {
     "I like projects where I have to think about the person using them, not only the code behind them.",
   ],
   email: "jeraldjamespatiag18@gmail.com",
+  resume: "/resume.pdf",
   links: [{ label: "GitHub", href: "https://github.com/Rald011" }],
 };
 
 // Each project gets its own page at /projects/<slug>.
-// Optional fields: year, status, context, repo, paper, about, features, design, images.
+// Optional fields: year, status, role, context, repo, demo, paper, about, mine, features, design, images.
+// role: your part in the project, shown as "My role". mine: what you personally built.
+// demo: link to the live site. mine: short list of what you personally built or changed (shown as "What I built").
 // Screenshots: put files in public/projects/<slug>/ and list them in images
-// like { src: "/projects/focusmode/idle.png", alt: "Idle state", caption: "..." }.
+// like { src: "/projects/focusmode/idle.png", alt: "Idle state", width: 1280, height: 800 }.
 export const projects = [
   {
     slug: "andam-davao",
@@ -108,7 +111,9 @@ export const projects = [
 
 export const skills = [
   { group: "Languages", items: ["Java", "Kotlin", "JavaScript", "C++", "HTML", "CSS"] },
-  { group: "Tools", items: ["Git", "GitHub", "Next.js", "React", "Tailwind CSS", "Firebase"] },
+  { group: "Frameworks", items: ["Jetpack Compose", "Next.js", "React", "Tailwind CSS"] },
+  { group: "Tools", items: ["Android", "Firebase", "Git", "GitHub"] },
+  { group: "Concepts", items: ["Unit testing", "UI and UX design", "Usability heuristics"] },
   {
     group: "Coursework",
     items: [
